@@ -16,9 +16,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div v-for="recipe in data" >
-      <Recipe :recipe="recipe"></Recipe>
-    </div>
+  <div v-for="recipe in data" >
+    <Recipe :recipe="recipe"></Recipe>
+  </div>
 </template>
 
 <style scoped>

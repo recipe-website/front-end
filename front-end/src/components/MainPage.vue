@@ -4,7 +4,7 @@ import RecipeList from "@/components/RecipeList.vue";
 </script>
 
 <template>
-<h1>Recipe Website</h1>
+<h1>StepwiseChef</h1>
 <RecipeList></RecipeList>
 </template>
 
