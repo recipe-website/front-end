@@ -16,22 +16,34 @@ const filters = ref({
   ingredients: [],
 });
 
+
+
+
 // Funkcja do załadowania przepisów
 const fetchRecipes = async (appliedFilters = null) => {
   isLoading.value = true;
-  try {
-    const response = appliedFilters
-        ? await axios.post("http://localhost:8080/recipe/allRecipes", {
-          filters: appliedFilters,
-        })
-        : await axios.get("http://localhost:8080/recipe/allRecipes");
-    recipes.value = response.data;
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-  } finally {
-    setTimeout(() => {
+  console.log("appliedFilters", appliedFilters);
+  if (appliedFilters !== null && appliedFilters !== undefined) {
+
+    try {
+      const response = await axios.get("http://localhost:8080/recipe/allRecipesFromDB/"+appliedFilters.ingredients.join(",").toString());
+      recipes.value = response.data;
+      console.log(recipes.value);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    } finally {
       isLoading.value = false;
-    }, 3000);
+    }
+  }else{
+    try {
+      const response = await axios.get("http://localhost:8080/recipe/allRecipes");
+      recipes.value = response.data;
+
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+    } finally {
+      isLoading.value = false;
+    }
   }
 };
 
@@ -43,9 +55,10 @@ onMounted(() => {
 // Funkcja do przetwarzania filtrów
 const applyFilters = (selectedFilters) => {
   filters.value = selectedFilters;
-  isFiltersApplied.value = true;
+  isFiltersApplied.value = true
   fetchRecipes(selectedFilters); // Pobranie przepisów zgodnych z filtrami
 };
+
 </script>
 
 <template>

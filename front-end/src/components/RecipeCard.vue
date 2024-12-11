@@ -12,6 +12,8 @@ defineProps(["recipe"]);
 
 <style scoped>
 .recipe-card {
+  color: black ;
+  background-color: #528540;
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;

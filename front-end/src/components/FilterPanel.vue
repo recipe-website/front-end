@@ -1,15 +1,27 @@
 <script setup>
-import { ref } from "vue";
+
+import {onMounted, ref} from "vue";
 import Illustration from "@/assets/filter-illustration.png";
+import axios from "axios";
 
 // Predefiniowane opcje filtrów
 const difficultyLevels = [1, 2, 3, 4, 5];
-const ingredients = ["Chicken", "Avocado", "Onion", "Tomato", "Cheese"];
 
+// const ingredients = ["Chicken", "Avocado", "Onion", "Tomato", "Cheese"];
+/*const ingredients = ref([
+
+{ingredientName: 'plain greek yogurt', rawText: '⅔ cup plain Greek yogurt'},
+{ingredientName: 'lime juice', rawText: '1 tablespoon lime juice'},
+{ingredientName: 'pepper',  rawText: 'Pepper, to taste'},
+{ingredientName: 'chili powder', rawText: '⅛ teaspoon chili powder'},
+{ingredientName: 'avocado', rawText: '1 avocado, cubed, divided'}
+]);*/
+const ingredients = ref([]);
 // Refy dla wybranych filtrów
 const selectedDifficulty = ref("");
 const selectedIngredients = ref([]);
 const selectedTime = ref({ min: "", max: "" });
+const isLoading = ref(true);
 
 // Emitowanie zdarzenia zastosowania filtrów
 const emit = defineEmits(["filters-applied"]);
@@ -22,10 +34,37 @@ const applyFilters = () => {
   };
   emit("filters-applied", selectedFilters);
 };
+isLoading.value = false;
+const fetchIngredients = async () => {
+  try {
+    console.log("Loading ingredients");
+    const response = await axios.get("http://localhost:8080/recipe/allIngredients");
+    ingredients.value = response.data;
+
+    isLoading.value = false;
+  }catch (error) {
+    console.error("Error fetching ingredients:", error);
+  }
+}
+onMounted(() => {
+  fetchIngredients();
+});
+const onIngredientChange = (selectedIngredient) =>{
+  selectedIngredients.value.push(selectedIngredient);
+}
+const deleteFromSelectedIngredients = (ingredient) =>{
+    selectedIngredients.value =selectedIngredients.value.filter(
+        (item) => item !== ingredient
+    );
+}
 </script>
 
 <template>
-  <div class="filter-container">
+  <div v-if="isLoading" class="loading-screen">
+    <h1 class="app-title">StepwiseChef</h1>
+    <p class="loading-text">Loading filters...</p>
+  </div>
+  <div v-else class="filter-container">
     <!-- Wprowadzenie -->
     <div class="intro-section">
       <h2>Find Your Perfect Recipe</h2>
@@ -46,14 +85,27 @@ const applyFilters = () => {
 
       <!-- Filtr: Składniki -->
       <div class="ingredients">
-        <label>Ingredients:</label>
-        <div v-for="ingredient in ingredients" :key="ingredient">
-          <input
-              type="checkbox"
-              :value="ingredient"
-              v-model="selectedIngredients"
-          />
-          {{ ingredient }}
+        <label for="ingredient-select">Ingredients:</label>
+        <select
+            id="ingredient-select"
+            v-model="selectedIngredient"
+            @change="onIngredientChange(selectedIngredient)"
+        >
+          <option value="" disabled>Select an ingredient</option>
+          <option
+              v-for="ingredient in ingredients"
+              :key="ingredient.ingredientName"
+              :value="ingredient.ingredientName"
+          >
+            {{ ingredient.ingredientName }}
+          </option>
+        </select>
+        <div  class="saved" v-if="selectedIngredients">
+          <div v-for="ingredient in selectedIngredients" :key="ingredient">
+            {{ ingredient }}
+            <button @click="deleteFromSelectedIngredients(ingredient)">x</button>
+
+          </div>
         </div>
       </div>
 
@@ -162,6 +214,39 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+
+.saved {
+  display: flex;
+  flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
+  gap: 10px; /* Adds spacing between items */
+}
+/*odpowiada za  kązdy div pochodny*/
+.saved > div {
+  flex: 0 1 auto; /* Allows each item to grow and shrink while maintaining a minimal width */
+  min-width: 1px; /* Set the minimal width for each item */
+  padding: 3px; /* Add some padding for better appearance */
+  border: 1px solid #ccc; /* Optional: border for separation */
+  border-radius: 7px; /* Optional: rounded corners */
+  text-align: center; /* Center-align the text */
+  background-color: #f9f9f9; /* Optional: background color for better visibility */
+}
+
+.saved button{
+  background-color: transparent; /* Remove the default button background */
+  border: none; /* Remove the button border */
+  color: red; /* Set the text color to red */
+  font-size: 22px; /* Adjust the size of the "x" */
+  cursor: pointer; /* Change the cursor to a pointer for better UX */
+  padding: 0; /* Remove padding for minimal size */
+  margin: 0; /* Remove margin for minimal size */
+  line-height: 1; /* Ensure the "x" is centered vertically */
+}
+
+.saved button:hover{
+  color:darkred;
+  background-color: transparent;
+}
+
 
 button:hover {
   background-color: #0e3c0e;

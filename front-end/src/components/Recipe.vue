@@ -3,21 +3,21 @@ import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 
-const route = useRoute();
+// const route = useRoute();
 const recipe = ref(null);
 const isLoading = ref(true);
-
-onMounted(async () => {
-  const recipeId = route.params.recipeId;
-  try {
-    const response = await axios.get(`http://localhost:8080/recipe/${recipeId}`);
-    recipe.value = response.data;
-  } catch (error) {
-    console.error("Error fetching recipe:", error);
-  } finally {
-    isLoading.value = false;
-  }
-});
+//nie jestem pewien do czego to ma słóżyć
+// onMounted(async () => {
+//   const recipeId = route.params.recipeId;
+//   try {
+//     const response = await axios.get(`http://localhost:8080/recipe/${recipeId}`);
+//     recipe.value = response.data;
+//   } catch (error) {
+//     console.error("Error fetching recipe:", error);
+//   } finally {
+//     isLoading.value = false;
+//   }
+// });
 </script>
 
 <template>

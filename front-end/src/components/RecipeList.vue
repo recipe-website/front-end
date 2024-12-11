@@ -13,7 +13,7 @@
 
     <!-- Lista przepisów -->
     <div v-else class="recipe-list">
-      <RecipeCard v-for="recipe in recipes" :key="recipe.recipeId" :recipe="recipe" />
+      <RecipeCard v-for="recipe in props.recipes" :key="recipe.recipeId" :recipe="recipe" />
     </div>
   </div>
 </template>
@@ -22,24 +22,37 @@
 import { ref, onMounted } from "vue";
 import RecipeCard from "@/components/RecipeCard.vue";
 import FilterPanel from "@/components/FilterPanel.vue";
-import axios from "axios";
+import { defineProps } from 'vue';
+
+// Define the prop to accept recipes
+const props = defineProps({
+  recipes: {
+    type: Array,
+    required: true
+  },
+  filters: {
+    type: Object,
+    required: true
+  }
+});
+
 
 const recipes = ref([]);
-const isLoading = ref(true);
+const filters = ref({
+  difficulty: "",
+  minTime: "",
+  maxTime: "",
+  ingredients: [],
+});
+const isLoading = ref(false);
 
 onMounted(async () => {
-  try {
-    const response = await axios.get("http://localhost:8080/recipe/allRecipes");
-    recipes.value = response.data;
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-  } finally {
-    isLoading.value = false;
-  }
+
 });
 
 // Funkcja do stosowania filtrów
 const applyFilters = (filters) => {
+
   // Tutaj logika filtrowania przepisów (na razie mock)
   console.log("Filters applied:", filters);
 };
