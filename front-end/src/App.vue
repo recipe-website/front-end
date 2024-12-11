@@ -1,12 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import MainPage from "@/components/MainPage.vue";
+import MainPage from "@/components/MainPage.vue"; // Zmienione na komponent
 </script>
 
 <template>
-  <MainPage></MainPage>
+  <MainPage/>
 </template>
 
 <style scoped>
-
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
 </style>

@@ -1,4 +1,4 @@
-# front-end
+# front-end cd front-end  npm rundev
 
 This template should help get you started developing with Vue 3 in Vite.
 
