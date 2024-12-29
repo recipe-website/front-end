@@ -1,9 +1,9 @@
 <script setup>
-import MainPage from "@/components/MainPage.vue"; // Zmienione na komponent
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <MainPage/>
+  <router-view/>
 </template>
 
 <style scoped>

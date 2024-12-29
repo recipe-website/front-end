@@ -13,7 +13,7 @@
 
     <!-- Lista przepisów -->
     <div v-else class="recipe-list">
-      <RecipeCard v-for="recipe in props.recipes" :key="recipe.recipeId" :recipe="recipe" />
+      <RecipeCard v-for="recipe in recipes" :key="recipe.recipeId" :recipe="recipe" />
     </div>
   </div>
 </template>
@@ -23,39 +23,40 @@ import { ref, onMounted } from "vue";
 import RecipeCard from "@/components/RecipeCard.vue";
 import FilterPanel from "@/components/FilterPanel.vue";
 import { defineProps } from 'vue';
+import axios from "axios";
 
-// Define the prop to accept recipes
-const props = defineProps({
-  recipes: {
-    type: Array,
-    required: true
-  },
-  filters: {
-    type: Object,
-    required: true
-  }
+// Define the prop to accept recipes from filterPanel by querry
+const props =defineProps({
+  difficulty: String,
+  minTime:String,
+  maxTime: String,
+  ingredients: Array,
 });
-
 
 const recipes = ref([]);
-const filters = ref({
-  difficulty: "",
-  minTime: "",
-  maxTime: "",
-  ingredients: [],
-});
 const isLoading = ref(false);
+const fetchRecipes = async (appliedFilters = null) => {
+  isLoading.value = true;
+  let url ="http://localhost:8080/recipe/allRecipesFromDB"//basic url
+  if (appliedFilters.ingredients.length > 0 ) {
+    url = url+"/"+appliedFilters.ingredients.join(",").toString()
+  }
+  try {
+    const response = await axios.get(url);
+    recipes.value = response.data;
+
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 onMounted(async () => {
-
+  fetchRecipes(props)
 });
 
-// Funkcja do stosowania filtrów
-const applyFilters = (filters) => {
 
-  // Tutaj logika filtrowania przepisów (na razie mock)
-  console.log("Filters applied:", filters);
-};
 </script>
 
 <style scoped>

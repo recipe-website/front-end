@@ -3,19 +3,10 @@
 import {onMounted, ref} from "vue";
 import Illustration from "@/assets/filter-illustration.png";
 import axios from "axios";
-
+import { useRouter } from "vue-router";
 // Predefiniowane opcje filtrów
 const difficultyLevels = [1, 2, 3, 4, 5];
 
-// const ingredients = ["Chicken", "Avocado", "Onion", "Tomato", "Cheese"];
-/*const ingredients = ref([
-
-{ingredientName: 'plain greek yogurt', rawText: '⅔ cup plain Greek yogurt'},
-{ingredientName: 'lime juice', rawText: '1 tablespoon lime juice'},
-{ingredientName: 'pepper',  rawText: 'Pepper, to taste'},
-{ingredientName: 'chili powder', rawText: '⅛ teaspoon chili powder'},
-{ingredientName: 'avocado', rawText: '1 avocado, cubed, divided'}
-]);*/
 const ingredients = ref([]);
 // Refy dla wybranych filtrów
 const selectedDifficulty = ref("");
@@ -23,16 +14,22 @@ const selectedIngredients = ref([]);
 const selectedTime = ref({ min: "", max: "" });
 const isLoading = ref(true);
 
+const router = useRouter();
 // Emitowanie zdarzenia zastosowania filtrów
-const emit = defineEmits(["filters-applied"]);
 const applyFilters = () => {
-  const selectedFilters = {
-    difficulty: selectedDifficulty.value,
-    minTime: selectedTime.value.min,
-    maxTime: selectedTime.value.max,
-    ingredients: selectedIngredients.value,
-  };
-  emit("filters-applied", selectedFilters);
+  router.push(
+      {
+        name: "RecipeList",
+        query: {
+          difficulty: selectedDifficulty.value || undefined,
+          minTime: selectedTime.value.min || undefined,
+          maxTime: selectedTime.value.max || undefined,
+          ingredients: selectedIngredients.value.length > 0 ? selectedIngredients.value.join(",") : undefined,
+        },
+      }
+  );
+  // Create the selectedFilters object dynamically
+
 };
 isLoading.value = false;
 const fetchIngredients = async () => {
@@ -40,7 +37,6 @@ const fetchIngredients = async () => {
     console.log("Loading ingredients");
     const response = await axios.get("http://localhost:8080/recipe/allIngredients");
     ingredients.value = response.data;
-
     isLoading.value = false;
   }catch (error) {
     console.error("Error fetching ingredients:", error);
@@ -103,7 +99,7 @@ const deleteFromSelectedIngredients = (ingredient) =>{
         <div  class="saved" v-if="selectedIngredients">
           <div v-for="ingredient in selectedIngredients" :key="ingredient">
             {{ ingredient }}
-            <button @click="deleteFromSelectedIngredients(ingredient)">x</button>
+            <button @click="deleteFromSelectedIngredients(ingredient)" >x</button>
 
           </div>
         </div>
