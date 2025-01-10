@@ -9,9 +9,9 @@ const difficultyLevels = [1, 2, 3, 4, 5];
 
 const ingredients = ref([]);
 // Refy dla wybranych filtrów
-const selectedDifficulty = ref("");
+const selectedDifficulty = ref(0);
 const selectedIngredients = ref([]);
-const selectedTime = ref({ min: "", max: "" });
+const selectedTime = ref({ min: 0, max: 0 });
 const isLoading = ref(true);
 
 const router = useRouter();
@@ -21,10 +21,10 @@ const applyFilters = () => {
       {
         name: "RecipeList",
         query: {
-          difficulty: selectedDifficulty.value || undefined,
-          minTime: selectedTime.value.min || undefined,
-          maxTime: selectedTime.value.max || undefined,
-          ingredients: selectedIngredients.value.length > 0 ? selectedIngredients.value.join(",") : undefined,
+          difficulty: Number(selectedDifficulty.value) || null,
+          minTime: Number(selectedTime.value.min) || null,
+          maxTime: Number(selectedTime.value.max) || null,
+          ingredients: selectedIngredients.value.length > 0 ? selectedIngredients.value.join(",") : null,
         },
       }
   );

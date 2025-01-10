@@ -27,9 +27,9 @@ import axios from "axios";
 
 // Define the prop to accept recipes from filterPanel by querry
 const props =defineProps({
-  difficulty: String,
-  minTime:String,
-  maxTime: String,
+  difficulty: Number,
+  minTime:Number,
+  maxTime: Number,
   ingredients: Array,
 });
 
@@ -37,14 +37,10 @@ const recipes = ref([]);
 const isLoading = ref(false);
 const fetchRecipes = async (appliedFilters = null) => {
   isLoading.value = true;
-  let url ="http://localhost:8080/recipe/allRecipesFromDB"//basic url
-  if (appliedFilters.ingredients.length > 0 ) {
-    url = url+"/"+appliedFilters.ingredients.join(",").toString()
-  }
+  console.log(appliedFilters);
   try {
-    const response = await axios.get(url);
+    const response = await axios.get("http://localhost:8080/recipe/allRecipesFromDB", {params: appliedFilters});
     recipes.value = response.data;
-
   } catch (error) {
     console.error("Error fetching recipes:", error);
   } finally {

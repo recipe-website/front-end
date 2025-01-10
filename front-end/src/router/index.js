@@ -7,10 +7,10 @@ const routes = [
   { path: "/", component: MainPage,name: "Main" },  // Strona główna
   { path: "/RecipeList", component: RecipeList,name: "RecipeList",
     props: (route) => ({
-      difficulty: String(route.query.difficulty),
-      minTime: String(route.query.minTime),
-      maxTime: String(route.query.maxTime),
-      ingredients: route.query.ingredients ? route.query.ingredients.split(",") : [],
+      difficulty: route.query.difficulty,
+      minTime: route.query.minTime,
+      maxTime: route.query.maxTime,
+      ingredients: route.query.ingredients,
     }),
   },
   { path: "/details/:recipeId", component: Recipe,}
