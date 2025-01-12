@@ -13,6 +13,7 @@ const selectedDifficulty = ref(0);
 const selectedIngredients = ref([]);
 const selectedTime = ref({ min: 0, max: 0 });
 const isLoading = ref(true);
+const selectedIngredient = ref(null);
 
 const router = useRouter();
 // Emitowanie zdarzenia zastosowania filtrów
@@ -38,6 +39,9 @@ const fetchIngredients = async () => {
     const response = await axios.get("http://localhost:8080/recipe/allIngredients");
     ingredients.value = response.data;
     isLoading.value = false;
+    ingredients.value.sort((a, b) => a.localeCompare(b));
+    console.log(ingredients.value);
+
   }catch (error) {
     console.error("Error fetching ingredients:", error);
   }
@@ -45,13 +49,19 @@ const fetchIngredients = async () => {
 onMounted(() => {
   fetchIngredients();
 });
-const onIngredientChange = (selectedIngredient) =>{
-  selectedIngredients.value.push(selectedIngredient);
+function onIngredientChange(){
+  console.log(selectedIngredient.value)
+  selectedIngredients.value.push(selectedIngredient.value);
+  ingredients.value = ingredients.value.filter(
+      (item) => item !== selectedIngredient.value
+  );
 }
 const deleteFromSelectedIngredients = (ingredient) =>{
     selectedIngredients.value =selectedIngredients.value.filter(
         (item) => item !== ingredient
     );
+    ingredients.value.push(ingredient);
+    console.log(ingredients.value.sort((a, b) => a.localeCompare(b)));
 }
 </script>
 
@@ -85,20 +95,20 @@ const deleteFromSelectedIngredients = (ingredient) =>{
         <select
             id="ingredient-select"
             v-model="selectedIngredient"
-            @change="onIngredientChange(selectedIngredient)"
+            @change="onIngredientChange"
         >
           <option value="" disabled>Select an ingredient</option>
           <option
               v-for="ingredient in ingredients"
               :key="ingredient.ingredientName"
-              :value="ingredient.ingredientName"
+              :value="ingredient"
           >
-            {{ ingredient.ingredientName }}
+            {{ ingredient }}
           </option>
         </select>
         <div  class="saved" v-if="selectedIngredients">
-          <div v-for="ingredient in selectedIngredients" :key="ingredient">
-            {{ ingredient }}
+          <div v-for="ingredient in selectedIngredients" >
+            {{ ingredient}}
             <button @click="deleteFromSelectedIngredients(ingredient)" >x</button>
 
           </div>

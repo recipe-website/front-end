@@ -10,7 +10,7 @@ const details = (id) =>{
 
 <template>
   <div class="recipe-card" v-on:click="details(recipe.recipeId.recipeId)" >
-    <img :src="recipe.imageUrl" alt="Recipe image" />
+    <img :src="recipe.thumbnailUrl" alt="Recipe image" />
     <h3>{{ recipe.title }}</h3>
     <p>{{ recipe.description }}</p>
 
@@ -20,14 +20,14 @@ const details = (id) =>{
 <style scoped>
 .recipe-card {
   color: black ;
-  background-color: #528540;
+  background-color: #e5771e;
   border: 1px solid #ccc;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
 }
 .recipe-card:hover {
-  background-color: #6cdb2f;
+  background-color: #f4a127;
   transform: scale(1.05);
 }
 .recipe-card img {
