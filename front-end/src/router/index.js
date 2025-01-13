@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import MainPage from "@/components/MainPage.vue";  // Strona główna z listą przepisów
-import Recipe from "@/components/Recipe.vue"; // Zintegrowany komponent przepisu (dawniej RecipeDetail)
+import Recipe from "@/components/Recipe.vue"; // Zintegrowany komponent przepisu (RecipeDetail)
 import RecipeList from "@/components/RecipeList.vue";
 
 const routes = [

@@ -1,7 +1,12 @@
 <script setup>
 
 import {onMounted, ref} from "vue";
-import Illustration from "@/assets/filter-illustration.png";
+import Illustration1 from "@/assets/Tomato And Anchovy Pasta.jpg";
+import Illustration2 from "@/assets/3 Ingredient Peanut Butter Cookies.jpg";
+import Illustration3 from "@/assets/Low-Carb Avocado Chicken Salad.jpg";
+import Illustration4 from "@/assets/3-Ingredient Teriyaki Chicken.jpg";
+import Illustration5 from "@/assets/Honey Garlic Shrimp Stir-Fry.jpg";
+import Illustration6 from "@/assets/Mac 'N' Cheese.jpg";
 import axios from "axios";
 import { useRouter } from "vue-router";
 // Predefiniowane opcje filtrów
@@ -73,9 +78,23 @@ const deleteFromSelectedIngredients = (ingredient) =>{
   <div v-else class="filter-container">
     <!-- Wprowadzenie -->
     <div class="intro-section">
+      <h1 class="app-title">StepwiseChef</h1>
       <h2>Find Your Perfect Recipe</h2>
       <p>Use the filters below to find recipes that match your preferences. You can select difficulty, preparation time, and ingredients to customize your search.</p>
-      <img :src="Illustration" alt="Cooking Illustration" />
+      <!-- Obrazki 1 i 2 obok siebie -->
+      <div class="image-row">
+        <img :src="Illustration1" alt="Tomato And Anchovy Pasta" />
+        <img :src="Illustration2" alt="3 Ingredient Peanut Butter Cookies" />
+      </div>
+
+      <!-- Obrazki 3, 4, 5 i 6 obok siebie -->
+      <div class="image-row">
+        <img :src="Illustration3" alt="Low-Carb Avocado Chicken Salad" />
+        <img :src="Illustration4" alt="3-Ingredient Teriyaki Chicken" />
+        <img :src="Illustration6" alt="Mac 'N' Cheese" />
+        <img :src="Illustration5" alt="Honey Garlic Shrimp Stir-Fry" />
+      </div>
+
     </div>
 
     <!-- Panel z filtrami -->
@@ -145,15 +164,23 @@ const deleteFromSelectedIngredients = (ingredient) =>{
 .filter-container {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: flex-start; /* Wyrównanie do góry */
   justify-content: space-between;
   height: 100vh;
-  padding: 20px;
-  background: linear-gradient(135deg, #DE7047, #FFDE8D);
+  padding: 10px 20px;
+  background: linear-gradient(140deg, #DE7047, #FFDE8D);
   color: #124B13;
 }
 
-/* Sekcja wprowadzenia */
+/* StepwiseChef */
+.app-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #124B13;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
 .intro-section {
   width: 50%;
   padding: 20px;
@@ -163,40 +190,61 @@ const deleteFromSelectedIngredients = (ingredient) =>{
 .intro-section h2 {
   font-size: 2.5rem;
   color: #124B13;
+  text-align: center;
 }
 
 .intro-section p {
-  font-size: 1.2rem;
-  margin: 10px 0 20px;
+  font-size: 1.3rem;
+  margin: 20px 0 20px;
+  margin-left: 15px;
+  text-align: center;
 }
 
-.intro-section img {
-  max-width: 100%;
-  height: auto;
+/* Wiersz z obrazkami */
+.image-row {
+  display: flex;
+  justify-content: space-between; /* Rozstawienie obrazków w wierszu */
+  margin-bottom: 20px; /* Odstęp między wierszami */
 }
+
+/* Obrazki w wierszu */
+.intro-section img {
+  width: 48%; /* Dwa obrazki w jednym wierszu zajmują 48% szerokości */
+  height: 250px;
+  border-radius: 15px;
+  margin-bottom: 10px; /* Odstęp między obrazkami */
+  margin-left: 10px;
+  margin-right: 25px;
+}
+
 
 /* Sekcja filtrów */
 .filters {
-  width: 50%;
+  position: relative;
+  top: 110px;
+  right: 45px;
+  width: 45%;
+  height: 48%;
   padding: 20px;
+  justify-content: center;
   background-color: #FFF5E3;
-  border-radius: 16px;
+  border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .filters label {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   font-weight: bold;
 }
 
 .filters input,
 .filters select {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #528540;
+  border: 1px solid #124B13;
 }
 
 /* Styl dla filtrów czasowych */
@@ -211,50 +259,59 @@ const deleteFromSelectedIngredients = (ingredient) =>{
 
 /* Styl dla przycisku */
 button {
-  padding: 12px 24px;
+  padding: 12px 200px;
   font-size: 1rem;
   color: #FFF5E3;
   background-color: #124B13;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+
   transition: background-color 0.3s;
 }
 
 .saved {
   display: flex;
-  flex-wrap: wrap; /* Allows items to wrap to the next line if needed */
-  gap: 10px; /* Adds spacing between items */
+  flex-wrap: nowrap; /* Zamiast zawijania, wszystkie składniki będą na jednej linii */
+  gap: 10px; /* Odstęp między składnikami */
+  margin-top: 0px; /* Odstęp od góry */
+  overflow-x: auto; /* Umożliwia poziome przewijanie, gdy składniki wykraczają poza szerokość */
+  max-width: 100%; /* Aby kontener nie wychodził poza szerokość */
+  margin-bottom: 15px;
 }
-/*odpowiada za  kązdy div pochodny*/
+
 .saved > div {
-  flex: 0 1 auto; /* Allows each item to grow and shrink while maintaining a minimal width */
-  min-width: 1px; /* Set the minimal width for each item */
-  padding: 3px; /* Add some padding for better appearance */
-  border: 1px solid #ccc; /* Optional: border for separation */
-  border-radius: 7px; /* Optional: rounded corners */
-  text-align: center; /* Center-align the text */
-  background-color: #f9f9f9; /* Optional: background color for better visibility */
+  //display: ;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  background-color: #f9f9f9;
+  text-align: center;
+  width: fit-content;
+  height: 40px; /* Ustawiamy stałą wysokość dla każdego składnika */
+  box-sizing: border-box; /* Umożliwia uwzględnienie paddingu i obramowania w wymiarach */
+  white-space: nowrap;
 }
 
-.saved button{
-  background-color: transparent; /* Remove the default button background */
-  border: none; /* Remove the button border */
-  color: red; /* Set the text color to red */
-  font-size: 22px; /* Adjust the size of the "x" */
-  cursor: pointer; /* Change the cursor to a pointer for better UX */
-  padding: 0; /* Remove padding for minimal size */
-  margin: 0; /* Remove margin for minimal size */
-  line-height: 1; /* Ensure the "x" is centered vertically */
-}
-
-.saved button:hover{
-  color:darkred;
+.saved button {
   background-color: transparent;
+  border: none;
+  color: red;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 5px;
+  margin-left: 10px;
+  margin-top: 1px;
+  line-height: 1;
 }
 
+.saved button:hover {
+  color: darkred;
+}
 
 button:hover {
-  background-color: #0e3c0e;
 }
+
 </style>

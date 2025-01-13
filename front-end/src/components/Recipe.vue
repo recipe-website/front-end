@@ -6,7 +6,7 @@ import axios from "axios";
 const route = useRoute();
 const recipe = ref(null);
 const isLoading = ref(true);
-//nie jestem pewien do czego to ma słóżyć
+//nie jestem pewien do czego to ma służyć
 onMounted(async () => {
   const recipeId = route.params.recipeId;
   try {
