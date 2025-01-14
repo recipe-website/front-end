@@ -162,6 +162,7 @@ const getThumbnails = (canonicalId) => {
       <div class="nutrition-facts">
         <!-- Total Cooking Time -->
           <h4>Total Cooking Time:</h4> {{ recipe.totalTimeMinutes }} minutes
+          <h4>Difficulty:</h4> {{ recipe.difficulty }}/5
         <div class="cooking-time">
         </div>
         <!-- Nutrition Info -->

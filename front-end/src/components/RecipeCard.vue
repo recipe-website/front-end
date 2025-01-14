@@ -96,6 +96,7 @@ const getDescription = (canonicalId) => {
     <!-- Dynamiczne przypisanie obrazka -->
       <img :src="getThumbnail(recipe.canonicalId)" alt="Recipe image" />
       <h3 class="recipe-title">{{ recipe.title }}</h3>
+      <h5 class="recipe-title">Difficulty: {{ recipe.difficulty }}</h5>
       <p class="recipe-description">{{ getDescription(recipe.canonicalId) }}</p>
     </div>
   </div>

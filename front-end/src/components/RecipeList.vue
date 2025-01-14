@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Nagłówek -->
-    <h1>StepwiseChef</h1>
+    <h1 class="nav-header" @click="router.push('/')">StepwiseChef</h1>
 
     <!-- Ekran ładowania -->
     <div v-if="isLoading" class="loading-screen">
@@ -31,6 +31,7 @@ import RecipeCard from "@/components/RecipeCard.vue";
 import FilterPanel from "@/components/FilterPanel.vue";
 import { defineProps } from "vue";
 import axios from "axios";
+import router from "@/router/index.js";
 
 // Define the prop to accept recipes from filterPanel by query
 const props = defineProps({
@@ -162,5 +163,9 @@ h1 {
   padding: 100px 20px 20px;
   height: calc(100vh - 150px);
   overflow-y: auto;
+}
+
+.nav-header{
+  cursor: pointer;
 }
 </style>
