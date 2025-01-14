@@ -1,33 +1,33 @@
 <script setup>
-import {useRouter} from "vue-router";
+import { useRouter } from "vue-router";
 
 defineProps(["recipe"]);
-const router = useRouter()
-const details = (id) =>{
-  router.push(`/details/${id}`)
-}
+const router = useRouter();
+const details = (id) => {
+  router.push(`/details/${id}`);
+};
 </script>
 
 <template>
-  <div class="recipe-card" v-on:click="details(recipe.recipeId.recipeId)" >
+  <div class="recipe-card" v-on:click="details(recipe.recipeId.recipeId)">
     <img :src="recipe.thumbnailUrl" alt="Recipe image" />
-    <h3>{{ recipe.title }}</h3>
-    <p>{{ recipe.description }}</p>
-
+    <h3 class="recipe-title">{{ recipe.title }}</h3>
+    <p class="recipe-description">{{ recipe.description }}</p>
   </div>
 </template>
 
 <style scoped>
 .recipe-card {
-  color: black ;
+  color: black;
   background-color: #e5771e;
   border: 1px solid #ccc;
-  padding: 16px;
+  padding: 20px;
   border-radius: 8px;
   text-align: center;
 }
 .recipe-card:hover {
-  background-color: #f4a127;
+  color: #124B13;
+  background-color: #F4BB44;
   transform: scale(1.05);
 }
 .recipe-card img {
@@ -36,8 +36,17 @@ const details = (id) =>{
   border-radius: 8px;
 }
 
-.recipe-card h3 {
+/* Nazwa potrawy - pogrubiona */
+.recipe-title {
   font-size: 1.2em;
   margin: 8px 0;
+  font-weight: bold;
+}
+
+/* Opis potrawy - bez pogrubienia */
+.recipe-description {
+  font-size: 1em;
+  margin: 8px 0;
+  font-weight: normal;
 }
 </style>
