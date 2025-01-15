@@ -88,12 +88,18 @@ const getThumbnail = (canonicalId) => {
 const getDescription = (canonicalId) => {
   return recipeDescriptions[canonicalId] || "Delicious recipe, try it now!"; // Domyślny opis, jeśli brak
 };
+
+// Funkcja filtrująca przepisy, by sprawdzić, czy canonicalId nie jest "string"
+const isRecipeValid = (recipe) => {
+  return recipe.canonicalId !== "string";
+};
+
 </script>
 
 <template>
   <div class="recipe-grid">
-    <div class="recipe-card" v-on:click="details(recipe.recipeId.recipeId)">
-    <!-- Dynamiczne przypisanie obrazka -->
+    <div class="recipe-card" v-if="isRecipeValid(recipe)" v-on:click="details(recipe.recipeId.recipeId)">
+      <!-- Dynamiczne przypisanie obrazka -->
       <img :src="getThumbnail(recipe.canonicalId)" alt="Recipe image" />
       <h3 class="recipe-title">{{ recipe.title }}</h3>
       <h5 class="recipe-title">Difficulty: {{ recipe.difficulty }}</h5>
@@ -114,13 +120,13 @@ const getDescription = (canonicalId) => {
   background-color: #e5771e;
   border: 1px solid #ccc;
   border-radius: 8px;
-  padding: 15px; /* Mniejszy padding */
+  padding: 15px;
   text-align: center;
   color: black;
-  cursor: pointer; /* Kursor wskazuje na interaktywność */
+  cursor: pointer;
 
   /* Stałe wymiary */
-  height: 400px;
+  height: 430px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
