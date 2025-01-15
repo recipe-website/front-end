@@ -23,6 +23,13 @@ const selectedIngredient = ref(null);
 const router = useRouter();
 // Emitowanie zdarzenia zastosowania filtrów
 const applyFilters = () => {
+    if(selectedTime.value.min > selectedTime.value.max) {
+      console.log(selectedTime.value.min);
+      console.log(selectedTime.value.max);
+      [selectedTime.value.min,selectedTime.value.max] =[selectedTime.value.max,selectedTime.value.min];
+      console.log(selectedTime.value.min);
+      console.log(selectedTime.value.max);
+    }
   router.push(
       {
         name: "RecipeList",
@@ -308,9 +315,6 @@ button {
 
 .saved button:hover {
   color: darkred;
-}
-
-button:hover {
 }
 
 </style>
